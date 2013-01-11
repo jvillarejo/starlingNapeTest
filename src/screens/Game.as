@@ -61,47 +61,19 @@ package screens
 				addBall();
 			}
 			
-			for (var i:int = 0; i < space.liveBodies.length; i++) {
-				var body:Body = space.liveBodies.at(i);
-				
-				if (body.userData.graphic != null) {
-					graphicUpdate(body);
-				}
-			}
+			balls.forEach(function(item:BasketBall, index:int, array:Array):void {
+				item.updateGraphics();
+			});
+		}
+		
+		private function removeIfOutside(basketBall:BasketBall):void
+		{
+			
 		}
 		
 		private function addBall():void
 		{
-			var basketBall:BasketBall = new BasketBall();
-			basketBall.touchable = true;
-			basketBall.addEventListener(TouchEvent.TOUCH, onTouchEvent);
-			this.addChild(basketBall);
-			
-			var ball:Body = new Body(BodyType.DYNAMIC, new Vec2(Math.random()*750, 100));
-			ball.shapes.add(new Circle(50,null,new Material(20)));
-			ball.space = space;
-			ball.userData.graphic = basketBall;
-			basketBall.body = ball;
-		}
-		
-		private function onTouchEvent(event:TouchEvent):void
-		{
-			var touch:Touch = event.getTouch(stage);
-			var position:Point = touch.getLocation(stage);
-			
-			var target:BasketBall = event.currentTarget as BasketBall;
-			
-			if(touch.phase == TouchPhase.MOVED) {
-				target.body.position = new Vec2(position.x, position.y);
-			}
-			
-		}
-		
-		private function graphicUpdate(body:Body):void { 
-			var basketBall:BasketBall = body.userData.graphic as BasketBall;
-			basketBall.x = body.position.x;
-			basketBall.y = body.position.y;
-			basketBall.rotation = body.rotation;
+			balls.push(new BasketBall(this,space));
 		}
 		
 	}
